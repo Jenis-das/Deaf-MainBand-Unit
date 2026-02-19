@@ -20,7 +20,8 @@
 #define BUZZER_TIME 1
 // ---------------------------------- Timings ENDS -----------------------------
 
-
+#define SubBandMac "28:05:a5:33:3b:d2"
+#define DoorBellMac "00:00:00:00:00:00"
 
 
 // BLE
@@ -173,12 +174,12 @@ class ClientCallbacks : public NimBLEClientCallbacks {
       // Band
         std::string peerAddr = pClient->getPeerAddress().toString().c_str();
         //   if (pClient->getPeerAddress().toString().c_str() == "00....00"){
-        if(peerAddr == "00:00:00:00:00:00"){
+        if(peerAddr == SubBandMac){
             bandCall();
         }
         // Doorbell
         //   if (pClient->getPeerAddress().toString().c_str() == "28:05:a5:33:3b:d2"){
-        if(peerAddr == "28:05:a5:33:3b:d2"){
+        if(peerAddr == DoorBellMac){
             doorBellCall();
             
         }
@@ -192,12 +193,12 @@ class ClientCallbacks : public NimBLEClientCallbacks {
         bool m = true;
         // Band 
         std::string peerAddr = pClient->getPeerAddress().toString().c_str();
-        if (peerAddr == "00:00:00:00:00:00"){
+        if (peerAddr == SubBandMac){
             bandCall();
             m = true;
         }
         // Doorbell
-        if (peerAddr == "28:05:a5:33:3b:d2"){
+        if (peerAddr == DoorBellMac){
             m = true;
             doorBellCall();
         }
@@ -244,12 +245,12 @@ void notifyCB(NimBLERemoteCharacteristic* pRemoteCharacteristic, uint8_t* pData,
     Serial.print("Notification Received From: ");
     Serial.println(peerAddr.c_str());
     // Band 
-    if (peerAddr == "00:00:00:00:00:00") {
+    if (peerAddr == SubBandMac) {
         Serial.println("Band Server Sent Notification");
         flag = false;
     }
     // Doorbell
-    if (peerAddr == "28:05:a5:33:3b:d2") {
+    if (peerAddr == DoorBellMac) {
         doorBellCall();
         // Serial.println("Doorbell Band Server Sent Notification");
         flag = false;
